@@ -4,6 +4,13 @@ Todas as atualizações do sistema ficam registradas aqui, da mais recente para 
 Cada versão corresponde a um commit no Git — dá pra ver o histórico completo com `git log`,
 comparar duas versões com `git diff` ou voltar para qualquer ponto anterior se precisar.
 
+## [1.0.1] — Ajuste de espaço no hero
+
+- A caixa de vídeo/foto principal do topo (hero) estava deixando um espaço vazio grande
+  demais em telas muito largas (monitores ultrawide). Aumentei a largura máxima do
+  conteúdo do hero para a caixa ocupar mais espaço e sobrar menos vazio ao lado.
+- Mudança isolada só no hero — nenhuma outra seção da página foi afetada.
+
 ## [1.0.0] — Início do controle de versões
 
 Ponto de partida do versionamento. A partir daqui, toda atualização feita no site vira uma
