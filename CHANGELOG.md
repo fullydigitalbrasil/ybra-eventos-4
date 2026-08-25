@@ -4,6 +4,14 @@ Todas as atualizações do sistema ficam registradas aqui, da mais recente para 
 Cada versão corresponde a um commit no Git — dá pra ver o histórico completo com `git log`,
 comparar duas versões com `git diff` ou voltar para qualquer ponto anterior se precisar.
 
+## [1.0.2] — Remoção de textos de aviso/instrução
+
+- Removida a nota "* Depoimentos de exemplo — substitua por relatos reais de convidados
+  antes de publicar." abaixo dos depoimentos.
+- Removido o texto "Envie fotos e vídeos pelo painel administrativo em /admin..." no
+  final do álbum.
+- Removida também a regra de CSS `.album-note`, que só era usada por esse texto.
+
 ## [1.0.1] — Ajuste de espaço no hero
 
 - A caixa de vídeo/foto principal do topo (hero) estava deixando um espaço vazio grande

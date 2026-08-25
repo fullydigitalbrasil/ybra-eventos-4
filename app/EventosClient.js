@@ -373,9 +373,6 @@ export default function EventosClient({ items }) {
               <span className="who">Convidado(a) yBra</span>
             </div>
           </div>
-          <p style={{ marginTop: 30, fontSize: 12, color: 'var(--cream-dim)' }}>
-            * Depoimentos de exemplo — substitua por relatos reais de convidados antes de publicar.
-          </p>
         </div>
       </section>
 
@@ -431,10 +428,6 @@ export default function EventosClient({ items }) {
           <Pagination page={albumPage} totalPages={albumTotalPages} onChange={goToAlbumPage} />
         </div>
 
-        <p className="album-note">
-          Envie fotos e vídeos pelo painel administrativo em <strong>/admin</strong>. Eles aparecem
-          aqui automaticamente, sem precisar editar código.
-        </p>
         <img src="/gems/gem-green.png" alt="" aria-hidden="true" className="gem-decor gem-album" loading="lazy" />
       </section>
 
