@@ -4,6 +4,20 @@ Todas as atualizações do sistema ficam registradas aqui, da mais recente para 
 Cada versão corresponde a um commit no Git — dá pra ver o histórico completo com `git log`,
 comparar duas versões com `git diff` ou voltar para qualquer ponto anterior se precisar.
 
+## [1.1.0] — Suporte a embutir a página dentro do Shopify (iframe)
+
+- A página agora detecta quando está sendo carregada dentro de um `<iframe>` (por
+  exemplo, embutida numa Página do Shopify) e avisa automaticamente a altura real do
+  conteúdo pra página de fora, pra o iframe se ajustar sem cortar conteúdo nem sobrar
+  espaço em branco. Isso não muda nada em quem acessa a página diretamente (fora de
+  iframe) — o comportamento só entra em ação quando está embutida.
+- Corrigido um bug em que, dentro do iframe, algumas seções que usavam "altura da
+  tela" (o topo/hero, por exemplo) entravam num loop de crescimento infinito, já que
+  dentro de um iframe "altura da tela" passa a significar "altura do próprio iframe".
+  Agora essas seções usam a altura do próprio conteúdo quando embutidas.
+- Testado localmente simulando uma Página do Shopify com o iframe: a altura fica
+  estável e o conteúdo aparece por completo, sem cortes.
+
 ## [1.0.2] — Remoção de textos de aviso/instrução
 
 - Removida a nota "* Depoimentos de exemplo — substitua por relatos reais de convidados

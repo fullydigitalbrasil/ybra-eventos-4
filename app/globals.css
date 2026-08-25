@@ -30,6 +30,12 @@
   color:var(--cream);
   min-height:100vh;
 }
+/* Dentro de um <iframe> (ex: embutido numa Página do Shopify), "altura da
+   tela" passa a significar "altura do próprio iframe". Como ajustamos a
+   altura do iframe pra caber o conteúdo, usar vh/svh aqui criaria um loop
+   (cresce → recalcula 100% de uma tela maior → cresce mais). Por isso, sob
+   .in-iframe, essas seções usam a altura do próprio conteúdo em vez da tela. */
+.in-iframe .site{ min-height:0; }
 *{box-sizing:border-box; margin:0; padding:0;}
 html{scroll-behavior:smooth;}
 body{
@@ -101,6 +107,7 @@ h1,h2,h3,h4{
     linear-gradient(180deg, #ffffff 0%, #f4f2ec 55%, #ffffff 100%);
   overflow:hidden;
 }
+.in-iframe .hero{ min-height:0; }
 .hero-lines{
   position:absolute; inset:0; opacity:0.5;
   background-image:
@@ -248,8 +255,6 @@ h1,h2,h3,h4{
 .page-btn:disabled{ opacity:0.35; cursor:not-allowed; }
 .page-arrow{ font-size:16px; }
 .page-ellipsis{ color:var(--cream-dim); padding:0 4px; font-size:13px; }
-
-.album-note{ margin-top:40px; font-size:13px; color:var(--cream-dim); border-left:2px solid var(--green); padding-left:16px; max-width:560px; }
 
 /* Lightbox */
 .lightbox{

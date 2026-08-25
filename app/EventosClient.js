@@ -108,6 +108,35 @@ export default function EventosClient({ items }) {
   const [submitted, setSubmitted] = useState(false);
   const [formError, setFormError] = useState('');
 
+  // Quando essa página é embutida via <iframe> (ex: dentro de uma Página do
+  // Shopify), avisa a altura real do conteúdo pra página que está por fora
+  // poder ajustar a altura do iframe dinamicamente — evita cortar conteúdo
+  // ou sobrar espaço em branco. Se não estiver dentro de um iframe, isso
+  // simplesmente não tem efeito nenhum (o postMessage não é escutado por ninguém).
+  useEffect(() => {
+    if (window.self === window.top) return; // não está em iframe, não precisa
+
+    // Sinaliza pro CSS que estamos num iframe, pra seções que usam altura da
+    // tela (100vh/100svh — ex: hero) passarem a usar a altura do próprio
+    // conteúdo. Isso evita um loop de crescimento infinito (ver globals.css).
+    document.documentElement.classList.add('in-iframe');
+
+    function reportHeight() {
+      const height = document.documentElement.scrollHeight;
+      window.parent.postMessage({ type: 'ybra-eventos-height', height }, '*');
+    }
+
+    reportHeight();
+    const ro = new ResizeObserver(() => reportHeight());
+    ro.observe(document.documentElement);
+    window.addEventListener('load', reportHeight);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('load', reportHeight);
+    };
+  }, []);
+
   const heroMedia = useMemo(() => items.find((i) => i.hero) || null, [items]);
 
   const highlights = useMemo(() => {
