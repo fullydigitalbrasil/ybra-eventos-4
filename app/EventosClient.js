@@ -1,8 +1,8 @@
 'use client';
- 
+
 import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
- 
+
 function PlayIcon() {
   return (
     <svg viewBox="0 0 24 24">
@@ -10,13 +10,13 @@ function PlayIcon() {
     </svg>
   );
 }
- 
+
 // Tamanho das miniaturas do grid (álbum/destaques): pede ao Next.js uma versão
 // bem menor e comprimida da foto original, em vez da imagem em alta resolução
 // enviada pelo /admin. Isso reduz muito o peso da página — a foto original em
 // alta qualidade continua sendo usada quando o item é aberto no lightbox.
 const TILE_SIZES = '(max-width: 640px) 50vw, (max-width: 1000px) 33vw, 300px';
- 
+
 function MediaTile({ item, onOpen }) {
   return (
     <div className="tile" onClick={() => onOpen(item)}>
@@ -46,7 +46,7 @@ function MediaTile({ item, onOpen }) {
     </div>
   );
 }
- 
+
 function EmptyTile({ label }) {
   return (
     <div className="ph">
@@ -54,9 +54,9 @@ function EmptyTile({ label }) {
     </div>
   );
 }
- 
+
 const ALBUM_PAGE_SIZE = 12;
- 
+
 // Retorna algo como [1, '…', 4, 5, 6, '…', 20] para não listar centenas de páginas.
 function getPageNumbers(current, total) {
   const pages = [];
@@ -71,7 +71,7 @@ function getPageNumbers(current, total) {
   if (total > 1) add(total);
   return pages;
 }
- 
+
 function Pagination({ page, totalPages, onChange }) {
   if (totalPages <= 1) return null;
   return (
@@ -111,7 +111,7 @@ function Pagination({ page, totalPages, onChange }) {
     </nav>
   );
 }
- 
+
 export default function EventosClient({ items }) {
   const [filter, setFilter] = useState('all');
   const [albumPage, setAlbumPage] = useState(1);
@@ -123,7 +123,7 @@ export default function EventosClient({ items }) {
   const [formError, setFormError] = useState('');
   const [isEmbedded, setIsEmbedded] = useState(false);
   const [visibleWindow, setVisibleWindow] = useState(null);
- 
+
   // Quando essa página é embutida via <iframe> (ex: dentro de uma Página do
   // Shopify), avisa a altura real do conteúdo pra página que está por fora
   // poder ajustar a altura do iframe dinamicamente — evita cortar conteúdo
@@ -131,30 +131,30 @@ export default function EventosClient({ items }) {
   // simplesmente não tem efeito nenhum (o postMessage não é escutado por ninguém).
   useEffect(() => {
     if (window.self === window.top) return; // não está em iframe, não precisa
- 
+
     setIsEmbedded(true);
- 
+
     // Sinaliza pro CSS que estamos num iframe, pra seções que usam altura da
     // tela (100vh/100svh — ex: hero) passarem a usar a altura do próprio
     // conteúdo. Isso evita um loop de crescimento infinito (ver globals.css).
     document.documentElement.classList.add('in-iframe');
- 
+
     function reportHeight() {
       const height = document.documentElement.scrollHeight;
       window.parent.postMessage({ type: 'ybra-eventos-height', height }, '*');
     }
- 
+
     reportHeight();
     const ro = new ResizeObserver(() => reportHeight());
     ro.observe(document.documentElement);
     window.addEventListener('load', reportHeight);
- 
+
     return () => {
       ro.disconnect();
       window.removeEventListener('load', reportHeight);
     };
   }, []);
- 
+
   // Dentro de um iframe "esticado" pra caber todo o conteúdo (sem barra de
   // rolagem própria — ver acima), "position:fixed" deixa de significar
   // "fixo na tela do visitante" e passa a significar "fixo no iframe
@@ -174,52 +174,52 @@ export default function EventosClient({ items }) {
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
   }, []);
- 
+
   const lightboxStyle =
     isEmbedded && visibleWindow
       ? { position: 'absolute', top: visibleWindow.top, height: visibleWindow.height, left: 0, right: 0 }
       : undefined;
- 
+
   const heroMedia = useMemo(() => items.find((i) => i.hero) || null, [items]);
- 
+
   const highlights = useMemo(() => {
     const flagged = items.filter((i) => i.highlight);
     return (flagged.length ? flagged : items).slice(0, 8);
   }, [items]);
- 
+
   const eventNames = useMemo(() => {
     const set = new Set(items.map((i) => i.event).filter(Boolean));
     return Array.from(set);
   }, [items]);
- 
+
   const albumItems = useMemo(() => {
     if (filter === 'all') return items;
     return items.filter((i) => i.event === filter);
   }, [items, filter]);
- 
+
   const albumTotalPages = Math.max(1, Math.ceil(albumItems.length / ALBUM_PAGE_SIZE));
- 
+
   useEffect(() => {
     if (albumPage > albumTotalPages) setAlbumPage(1);
   }, [albumTotalPages, albumPage]);
- 
+
   const pagedAlbumItems = useMemo(() => {
     const start = (albumPage - 1) * ALBUM_PAGE_SIZE;
     return albumItems.slice(start, start + ALBUM_PAGE_SIZE);
   }, [albumItems, albumPage]);
- 
+
   function selectFilter(name) {
     setFilter(name);
     setAlbumPage(1);
   }
- 
+
   function goToAlbumPage(p) {
     const clamped = Math.min(Math.max(1, p), albumTotalPages);
     setAlbumPage(clamped);
     const el = document.getElementById('album');
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
- 
+
   async function submitLead(e) {
     e.preventDefault();
     setFormError('');
@@ -245,7 +245,7 @@ export default function EventosClient({ items }) {
       setSubmitting(false);
     }
   }
- 
+
   return (
     <div className="site">
       {/* HERO */}
@@ -269,7 +269,7 @@ export default function EventosClient({ items }) {
                 em um só lugar. Reviva os últimos encontros e garanta seu lugar no próximo.
               </p>
             </div>
- 
+
             <div className="hero-media">
               {heroMedia ? (
                 heroMedia.type === 'video' ? (
@@ -289,7 +289,7 @@ export default function EventosClient({ items }) {
           </div>
         </div>
       </section>
- 
+
       {/* MANIFESTO */}
       <section className="manifesto wrap" id="manifesto">
         <img src="/gems/gem-red.png" alt="" aria-hidden="true" className="gem-decor gem-manifesto" loading="lazy" />
@@ -339,7 +339,7 @@ export default function EventosClient({ items }) {
           </div>
         </div>
       </section>
- 
+
       {/* HIGHLIGHTS */}
       <section className="highlights" id="galeria">
         <div className="wrap">
@@ -369,7 +369,7 @@ export default function EventosClient({ items }) {
           </div>
         </div>
       </section>
- 
+
       {/* EXPERIENCE */}
       <section className="experience wrap">
         <span className="eyebrow">Por dentro da noite</span>
@@ -400,7 +400,7 @@ export default function EventosClient({ items }) {
           </div>
         </div>
       </section>
- 
+
       {/* TESTIMONIALS */}
       <section className="testimonials">
         <div className="wrap">
@@ -410,36 +410,30 @@ export default function EventosClient({ items }) {
           </h2>
           <div className="t-grid">
             <div className="t-card">
-              <span className="sample-tag">Exemplo</span>
               <span className="quote-mark">"</span>
               <p className="quote">
-                Senti que estava em um lugar feito para mim — as peças, a trilha, as pessoas.
-                Difícil não querer voltar.
+                Essa coleção Casual, toda inspirada em Brasil, eu amei.
               </p>
-              <span className="who">Convidado(a) yBra</span>
+              <span className="who">Luciana Gimenez</span>
             </div>
             <div className="t-card">
-              <span className="sample-tag">Exemplo</span>
               <span className="quote-mark">"</span>
               <p className="quote">
-                Mais do que um lançamento, uma noite de pertencimento de verdade. Já estou na
-                lista pro próximo.
+                I now have my own little bit of Brazil! Thank you.
               </p>
-              <span className="who">Convidado(a) yBra</span>
+              <span className="who">Richard</span>
             </div>
             <div className="t-card">
-              <span className="sample-tag">Exemplo</span>
               <span className="quote-mark">"</span>
               <p className="quote">
-                O showroom ao vivo muda tudo — ver e sentir a peça na luz certa, com a história
-                por trás dela.
+                Que evento maravilhoso, já quero o próximo.
               </p>
-              <span className="who">Convidado(a) yBra</span>
+              <span className="who">Jhennifer Mesquita</span>
             </div>
           </div>
         </div>
       </section>
- 
+
       {/* ALBUM */}
       <section className="album wrap" id="album">
         <div className="section-head">
@@ -481,7 +475,7 @@ export default function EventosClient({ items }) {
                 <EmptyTile key={i} label="Espaço reservado para fotos e vídeos" />
               ))}
         </div>
- 
+
         <div className="album-footer">
           {albumItems.length > 0 && (
             <p className="album-count">
@@ -491,10 +485,10 @@ export default function EventosClient({ items }) {
           )}
           <Pagination page={albumPage} totalPages={albumTotalPages} onChange={goToAlbumPage} />
         </div>
- 
+
         <img src="/gems/gem-green.png" alt="" aria-hidden="true" className="gem-decor gem-album" loading="lazy" />
       </section>
- 
+
       {lightboxItem && (
         <div className="lightbox open" onClick={() => setLightboxItem(null)} style={lightboxStyle}>
           <span className="lightbox-close" onClick={() => setLightboxItem(null)}>
@@ -509,7 +503,7 @@ export default function EventosClient({ items }) {
           </div>
         </div>
       )}
- 
+
       {/* NEXT EVENT / LEAD FORM */}
       <section className="next" id="proximo">
         <img src="/gems/gem-blue.png" alt="" aria-hidden="true" className="gem-decor gem-next" loading="lazy" />
@@ -533,7 +527,7 @@ export default function EventosClient({ items }) {
               Conhecer a yBra ↗
             </a>
           </div>
- 
+
           <div>
             <form className="lead-form" onSubmit={submitLead}>
               {!submitted ? (
@@ -614,7 +608,7 @@ export default function EventosClient({ items }) {
           </div>
         </div>
       </section>
- 
+
     </div>
   );
 }

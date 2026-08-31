@@ -228,7 +228,6 @@ h1,h2,h3,h4{
 .t-card .quote-mark{ font-family:var(--serif); font-size:52px; color:var(--green); line-height:1; font-style:italic; }
 .t-card p.quote{ margin:14px 0 22px; font-style:italic; font-family:var(--serif); font-size:19px; color:var(--cream-dim); }
 .t-card .who{ font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--green-light); }
-.t-card .sample-tag{ position:absolute; top:16px; right:16px; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--cream-dim); border:1px solid var(--line); padding:4px 8px; opacity:0.7;}
 
 /* ---------- ALBUM ---------- */
 .album{ padding:120px 0; position:relative; }
