@@ -4,6 +4,27 @@ Todas as atualizações do sistema ficam registradas aqui, da mais recente para 
 Cada versão corresponde a um commit no Git — dá pra ver o histórico completo com `git log`,
 comparar duas versões com `git diff` ou voltar para qualquer ponto anterior se precisar.
 
+## [1.2.0] — Remoção de botões do topo, miniaturas mais leves e lightbox no iframe
+
+- Removidos os botões "Quero receber o próximo convite" e "Ver últimos eventos" do
+  topo (hero) da página.
+- As miniaturas de fotos (destaques e álbum completo) agora carregam versões
+  redimensionadas e comprimidas, geradas automaticamente pelo Next.js, em vez da
+  foto original em alta resolução enviada pelo /admin. Isso reduz bastante o peso
+  da página — em testes, uma miniatura que antes pesava ~190KB passou a pesar
+  cerca de 8 a 13KB. A foto em qualidade original continua sendo usada quando o
+  item é aberto em destaque (lightbox).
+- Corrigido: quando a página está embutida numa Página do Shopify (iframe), abrir
+  uma foto em destaque abria a visualização no meio da página inteira, exigindo
+  rolar a tela pra cima ou pra baixo até encontrá-la. Agora a página que embute
+  (Shopify) avisa qual trecho está realmente visível na tela, e a visualização
+  abre exatamente nessa área — sem precisar rolar. Esse ajuste só afeta o uso
+  dentro do iframe; acessando a página diretamente, o comportamento continua o
+  mesmo de sempre.
+- **Atenção:** essa versão exige também atualizar o arquivo colado na Página do
+  Shopify (`shopify-embed.html`) — a versão anterior não envia a informação de
+  área visível que a correção do lightbox precisa.
+
 ## [1.1.0] — Suporte a embutir a página dentro do Shopify (iframe)
 
 - A página agora detecta quando está sendo carregada dentro de um `<iframe>` (por
