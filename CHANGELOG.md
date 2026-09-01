@@ -10,6 +10,34 @@ comparar duas versões com `git diff` ou voltar para qualquer ponto anterior se 
 
 
 
+\## \[1.3.1] — Diagnóstico do erro "Não foi possível enviar" no formulário
+
+
+
+\- Corrigido: se algo desse errado ao salvar um cadastro (ex: um problema de acesso
+
+&#x20; ao Vercel Blob), o erro não era tratado e a pessoa via a mensagem genérica "Não
+
+&#x20; foi possível enviar. Tente novamente." sem nenhuma pista do motivo real — nem
+
+&#x20; pra você, nem pra mim. Agora esse tipo de falha é capturado e o motivo exato
+
+&#x20; fica registrado nos logs do Vercel (aba "Logs" ou "Runtime Logs" do projeto),
+
+&#x20; o que ajuda a identificar a causa se o problema acontecer de novo.
+
+\- \*\*Se o erro "Não foi possível enviar" continuar aparecendo depois dessa
+
+&#x20; atualização\*\*, veja a mensagem exata nos Runtime Logs do Vercel (deploy mais
+
+&#x20; recente → aba Logs, procure por "Falha ao salvar lead") e me envie o texto —
+
+&#x20; com isso eu consigo apontar a causa exata (ex: token do Vercel Blob expirado
+
+&#x20; ou desconectado) em vez de tentar adivinhar.
+
+
+
 \## \[1.3.0] — E-mail de novo lead e correção do botão "Conhecer a yBra"
 
 

@@ -14,8 +14,7 @@ export async function POST(req) {
   if (!body.nome || !body.email || !body.whatsapp) {
     return NextResponse.json({ error: 'Preencha nome, e-mail e WhatsApp.' }, { status: 400 });
   }
-  const data = await getLeads();
-  data.items = data.items || [];
+
   const lead = {
     id: randomUUID(),
     createdAt: Date.now(),
@@ -24,8 +23,26 @@ export async function POST(req) {
     whatsapp: body.whatsapp,
     cidade: body.cidade || '',
   };
-  data.items.unshift(lead);
-  await saveLeads(data);
+
+  // Salvar o lead é a parte que realmente não pode falhar em silêncio: antes,
+  // um erro aqui (ex: problema de acesso ao Vercel Blob) derrubava a rota
+  // inteira sem responder um JSON de erro, e a pessoa via só a mensagem
+  // genérica "Não foi possível enviar. Tente novamente." — sem pista nenhuma
+  // do que houve. Agora capturamos o erro, registramos o motivo real nos
+  // logs do Vercel (Deployments → seu deploy → Runtime Logs) e respondemos
+  // com uma mensagem específica.
+  try {
+    const data = await getLeads();
+    data.items = data.items || [];
+    data.items.unshift(lead);
+    await saveLeads(data);
+  } catch (err) {
+    console.error('Falha ao salvar lead (Vercel Blob):', err);
+    return NextResponse.json(
+      { error: 'Não foi possível salvar seu cadastro agora. Tente novamente em instantes.' },
+      { status: 500 }
+    );
+  }
 
   // Avisa por e-mail que chegou um novo cadastro. Isso nunca deve impedir a
   // resposta de sucesso pra pessoa que preencheu o formulário — o cadastro já
