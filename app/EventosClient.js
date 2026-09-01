@@ -523,7 +523,12 @@ export default function EventosClient({ items }) {
               seus dados e seja convidado(a) entre os primeiros a saber — antes de qualquer
               anúncio público.
             </p>
-            <a href="https://ybrajoalheria.com.br/" className="btn" style={{ marginTop: 6 }}>
+            <a
+              href="https://ybrajoalheria.com.br/pages/data-sharing-opt-out?view=sobre-a-ybra"
+              className="btn"
+              style={{ marginTop: 6 }}
+              target="_top"
+            >
               Conhecer a yBra ↗
             </a>
           </div>

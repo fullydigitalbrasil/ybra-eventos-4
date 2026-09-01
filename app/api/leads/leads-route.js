@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { randomUUID } from 'crypto';
 import { isAuthenticated } from '../../../lib/auth';
 import { getLeads, saveLeads } from '../../../lib/data';
+import { sendLeadNotification } from '../../../lib/email';
 
 export async function POST(req) {
   let body;
@@ -15,15 +16,22 @@ export async function POST(req) {
   }
   const data = await getLeads();
   data.items = data.items || [];
-  data.items.unshift({
+  const lead = {
     id: randomUUID(),
     createdAt: Date.now(),
     nome: body.nome,
     email: body.email,
     whatsapp: body.whatsapp,
     cidade: body.cidade || '',
-  });
+  };
+  data.items.unshift(lead);
   await saveLeads(data);
+
+  // Avisa por e-mail que chegou um novo cadastro. Isso nunca deve impedir a
+  // resposta de sucesso pra pessoa que preencheu o formulário — o cadastro já
+  // está salvo no passo acima independente do e-mail funcionar ou não.
+  await sendLeadNotification(lead);
+
   return NextResponse.json({ ok: true });
 }
 
