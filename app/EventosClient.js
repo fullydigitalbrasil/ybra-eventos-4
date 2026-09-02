@@ -229,7 +229,14 @@ export default function EventosClient({ items }) {
     }
     setSubmitting(true);
     try {
-      const res = await fetch('/api/leads', {
+      // Obs: esse endpoint tem o nome "/api/inscricao" (em vez de algo como
+      // "/api/leads") de propósito — bloqueadores de anúncio e extensões de
+      // privacidade (uBlock, AdBlock, proteção de rastreamento do navegador)
+      // costumam ter listas de bloqueio que barram qualquer URL contendo a
+      // palavra "leads" ou "lead", achando que é rastreamento de marketing.
+      // Isso derrubava o pedido silenciosamente, sem chegar nem perto do
+      // servidor — daí o forms sempre falhar sem nenhum registro nos logs.
+      const res = await fetch('/api/inscricao', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formState),

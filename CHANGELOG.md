@@ -10,6 +10,46 @@ comparar duas versões com `git diff` ou voltar para qualquer ponto anterior se 
 
 
 
+\## \[1.3.2] — Causa real do erro "Não foi possível enviar" encontrada e corrigida
+
+
+
+\- Depois da v1.3.1, o erro continuou aparecendo e \*\*nenhum erro aparecia nos logs
+
+&#x20; do Vercel\*\* — essa combinação foi a pista decisiva: o pedido nem chegava a
+
+&#x20; entrar no servidor. A causa mais provável é bloqueadores de anúncio e
+
+&#x20; extensões de privacidade (uBlock Origin, AdBlock, proteção de rastreamento do
+
+&#x20; navegador, etc.), que trazem listas de bloqueio que barram qualquer chamada
+
+&#x20; para um endereço contendo a palavra "leads" — interpretando como rastreamento
+
+&#x20; de marketing — mesmo sendo uma chamada do próprio site, para o próprio site.
+
+\- Corrigido renomeando o endereço interno que o formulário usa para enviar os
+
+&#x20; dados: de `/api/leads` para `/api/inscricao`. Não muda nada visualmente nem
+
+&#x20; no /admin — é só o "endereço interno" que o navegador usa por trás dos
+
+&#x20; panos, agora com um nome que essas listas de bloqueio não reconhecem.
+
+\- Testei local o cadastro de ponta a ponta pelo novo endereço e confirmei que
+
+&#x20; funciona normalmente.
+
+\- \*\*Se por acaso o erro persistir mesmo depois dessa correção\*\*, é sinal de que
+
+&#x20; a causa é outra — nesse caso, tente enviar o formulário com o bloqueador de
+
+&#x20; anúncios do navegador desativado nesse site, e me avise se isso resolve. Isso
+
+&#x20; confirma (ou descarta) de vez essa causa.
+
+
+
 \## \[1.3.1] — Diagnóstico do erro "Não foi possível enviar" no formulário
 
 
