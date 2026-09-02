@@ -10,6 +10,52 @@ comparar duas versões com `git diff` ou voltar para qualquer ponto anterior se 
 
 
 
+\## \[1.3.3] — Corrige o e-mail de novo lead não sendo entregue a ninguém
+
+
+
+\- Causa provável do e-mail não chegar: sem verificar um domínio próprio na
+
+&#x20; Resend, o plano gratuito só entrega e-mails para o endereço que criou a
+
+&#x20; conta na Resend (no seu caso, `mario@fullydigital.com.br`) — e um único
+
+&#x20; envio com \*\*dois\*\* destinatários no mesmo e-mail (`mario@...` e
+
+&#x20; `contato@ybrajewelry.com`) faz a Resend recusar o envio \*\*inteiro\*\*, então
+
+&#x20; nem o endereço permitido recebia nada.
+
+\- Corrigido: agora cada destinatário recebe um envio separado e independente.
+
+&#x20; Assim, `mario@fullydigital.com.br` (o dono da conta na Resend) passa a
+
+&#x20; receber normalmente mesmo que `contato@ybrajewelry.com` continue sendo
+
+&#x20; recusado por enquanto — e cada envio que falhar fica registrado no log com
+
+&#x20; o endereço específico, facilitando identificar qual deles precisa do
+
+&#x20; domínio verificado.
+
+\- Testei o envio para os dois endereços separadamente e confirmei que uma
+
+&#x20; falha em um não afeta mais o outro.
+
+\- \*\*Para `contato@ybrajewelry.com` também receber\*\*, é necessário verificar
+
+&#x20; um domínio próprio na Resend (Resend → Domains → Add Domain, com os
+
+&#x20; registros de DNS que eles fornecem) e depois definir a variável de ambiente
+
+&#x20; `RESEND\_FROM\_EMAIL` no Vercel com um remetente desse domínio (ex:
+
+&#x20; `Eventos yBra <convites@seudominio.com>`). Me avise se quiser ajuda com
+
+&#x20; esse passo.
+
+
+
 \## \[1.3.2] — Causa real do erro "Não foi possível enviar" encontrada e corrigida
 
 
